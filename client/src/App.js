@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TextItem from "./TextItem";
 import "./App.css";
-import _ from "lodash";
 
 // const DATA_SIZE_HALF = "half"
 const DATA_SIZE_FULL = "full";
