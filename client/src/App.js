@@ -28,17 +28,16 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       let response = await fetch("/api/dataIdList?datasize=" + DATA_SIZE_FULL);
-      let list = await response.json();
-      responseHolder.list = list;
+      responseHolder.list = await response.json();
       setLastPage(responseHolder.list.length / pageSize);
-      await loadPage();
+      await loadPage(currentPage);
     };
 
     fetchData();
   }, []);
 
-  const loadPage = async () => {
-    let pageFirstIx = (currentPage - 1) * pageSize;
+  const loadPage = async (newCurrentPage) => {
+    let pageFirstIx = (newCurrentPage - 1) * pageSize;
 
     let pageLastIx = pageFirstIx + pageSize;
     let list = responseHolder.list.slice(pageFirstIx, pageLastIx);
@@ -58,8 +57,10 @@ function App() {
     let ableToProceed = currentPage < lastPage;
     if (ableToProceed) {
       setData([]);
-      setCurrentPage(currentPage + 1);
-      await loadPage();
+
+      let newCurrentPage = currentPage + 1;
+      setCurrentPage(newCurrentPage);
+      await loadPage(newCurrentPage);
     }
   };
 
@@ -67,8 +68,9 @@ function App() {
     let ableToProceed = currentPage > 1;
     if (ableToProceed) {
       setData([]);
-      setCurrentPage(currentPage - 1);
-      await loadPage();
+      let newCurrentPage = currentPage - 1;
+      setCurrentPage(newCurrentPage);
+      await loadPage(newCurrentPage);
     }
   };
 
